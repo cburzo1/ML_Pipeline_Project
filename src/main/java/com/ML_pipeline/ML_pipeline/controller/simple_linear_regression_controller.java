@@ -1,5 +1,7 @@
 package com.ML_pipeline.ML_pipeline.controller;
 
+import com.ML_pipeline.ML_pipeline.model.simple_linear_regression;
+import com.ML_pipeline.ML_pipeline.service.simple_linear_regression_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 public class simple_linear_regression_controller {
 
     @Autowired
-    private x_Service weatherService;
+    private simple_linear_regression_service slrs;
 
     @PostMapping("/add")
-    public String add_linear_regression_data(@RequestBody linear_regression_data){
-        weatherService.add_linear_regression_data(linear_regression_data);
+    public String add_linear_regression_data(@RequestBody simple_linear_regression slrs_data){
+        slrs.add_linear_regression_data(slrs_data);
 
         //System.out.println(weather);
 
-        return "success add weather";
+        return "success add data";
     }
 
     /*@GetMapping
