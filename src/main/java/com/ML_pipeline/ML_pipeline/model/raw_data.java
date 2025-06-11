@@ -3,8 +3,8 @@ package com.ML_pipeline.ML_pipeline.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "simple_linear_regression")
-public class simple_linear_regression {
+@Table(name = "raw_data")
+public class raw_data {
 
     @Id
     @GeneratedValue

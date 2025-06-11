@@ -1,15 +1,20 @@
 package com.ML_pipeline.ML_pipeline.service;
 
-import com.ML_pipeline.ML_pipeline.model.simple_linear_regression;
-import com.ML_pipeline.ML_pipeline.repository.simple_linear_regression_Repo;
+import com.ML_pipeline.ML_pipeline.model.raw_data;
+import com.ML_pipeline.ML_pipeline.repository.raw_data_repo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class simple_linear_regression_service_impl implements simple_linear_regression_service {
+public class raw_data_service_impl implements raw_data_service {
     @Autowired
-    private simple_linear_regression_Repo slrs;
+    private raw_data_repo rdr;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     //private final RestTemplate restTemplate;
 
@@ -26,9 +31,23 @@ public class simple_linear_regression_service_impl implements simple_linear_regr
     }*/
 
     @Override
-    public void add_linear_regression_data(simple_linear_regression slrs_data){
-        System.out.println("HELLO?");
-        slrs.save(slrs_data);
+    public void add_raw_data(ArrayList<raw_data> rd){
+        System.out.println("HELLO?? "+ rd.get(0));
+
+        try {
+            String json = mapper.writeValueAsString(rd);
+            System.out.println(json);
+
+            for(int i = 0; i < rd.size(); i++){
+                rdr.save(rd.get(i));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*for(int i = 0; i < rd.size();i++){
+            rdr.save(rd.set(i, rd));
+        }*/
     }
 
     /*@Override

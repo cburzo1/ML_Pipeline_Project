@@ -1,20 +1,23 @@
 package com.ML_pipeline.ML_pipeline.controller;
 
-import com.ML_pipeline.ML_pipeline.model.simple_linear_regression;
-import com.ML_pipeline.ML_pipeline.service.simple_linear_regression_service;
+import com.ML_pipeline.ML_pipeline.model.raw_data;
+import com.ML_pipeline.ML_pipeline.service.raw_data_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@RequestMapping("/...")
-public class simple_linear_regression_controller {
+@RequestMapping("/master")
+public class raw_data_controller {
 
     @Autowired
-    private simple_linear_regression_service slrs;
+    private raw_data_service rds;
 
     @PostMapping("/add")
-    public String add_linear_regression_data(@RequestBody simple_linear_regression slrs_data){
-        slrs.add_linear_regression_data(slrs_data);
+    public String add_raw_data(@RequestBody ArrayList<raw_data> rd){
+        rds.add_raw_data(rd);
 
         //System.out.println(weather);
 

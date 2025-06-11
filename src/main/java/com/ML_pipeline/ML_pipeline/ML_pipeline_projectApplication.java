@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class x_projectApplication {
+public class ML_pipeline_projectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(x_projectApplication.class, args);
+		SpringApplication.run(ML_pipeline_projectApplication.class, args);
 	}
 
 }
