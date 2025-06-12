@@ -2,6 +2,8 @@ package com.ML_pipeline.ML_pipeline.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "raw_data")
 public class raw_data {

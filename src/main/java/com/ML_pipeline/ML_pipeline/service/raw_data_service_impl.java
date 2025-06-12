@@ -3,6 +3,8 @@ package com.ML_pipeline.ML_pipeline.service;
 import com.ML_pipeline.ML_pipeline.model.raw_data;
 import com.ML_pipeline.ML_pipeline.repository.raw_data_repo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class raw_data_service_impl implements raw_data_service {
     private raw_data_repo rdr;
 
     ObjectMapper mapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(raw_data_service.class);
 
     //private final RestTemplate restTemplate;
 
@@ -32,11 +35,11 @@ public class raw_data_service_impl implements raw_data_service {
 
     @Override
     public void add_raw_data(ArrayList<raw_data> rd){
-        System.out.println("HELLO?? "+ rd.get(0));
 
         try {
             String json = mapper.writeValueAsString(rd);
-            System.out.println(json);
+
+            logger.debug("See json for raw data {}",json);
 
             for(int i = 0; i < rd.size(); i++){
                 rdr.save(rd.get(i));
@@ -45,9 +48,6 @@ public class raw_data_service_impl implements raw_data_service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*for(int i = 0; i < rd.size();i++){
-            rdr.save(rd.set(i, rd));
-        }*/
     }
 
     /*@Override

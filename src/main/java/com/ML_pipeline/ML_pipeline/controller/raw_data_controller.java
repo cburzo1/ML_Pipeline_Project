@@ -19,8 +19,6 @@ public class raw_data_controller {
     public String add_raw_data(@RequestBody ArrayList<raw_data> rd){
         rds.add_raw_data(rd);
 
-        //System.out.println(weather);
-
         return "success add data";
     }
 
