@@ -3,10 +3,11 @@ package com.ML_pipeline.ML_pipeline.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "authDB")
+@Table(name = "users")
 public class authDB {
     @Id
     @GeneratedValue
@@ -21,8 +22,13 @@ public class authDB {
     @Column(name = "email")
     String email;
 
-    @Column(name = "create_at")
-    Date created_at;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime created_at;
+
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = LocalDateTime.now();
+    }
 
     @Column(name = "enabled")
     Boolean enabled;
@@ -59,11 +65,11 @@ public class authDB {
         this.email = email;
     }
 
-    public Date getCreated_at() {
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 
