@@ -8,16 +8,18 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class authDB {
+public class User {
     @Id
     @GeneratedValue
     private UUID id;
 
+    //Remember that column just maps your sql to this model, @JsonProperty("password") will handle the
+    // the name switches but dont use if you dont have to because it makes code messy
     @Column(name = "username")
-    String user_name;
+    String username;
 
     @Column(name = "password")
-    String pass_word;
+    String password;
 
     @Column(name = "email")
     String email;
@@ -41,20 +43,20 @@ public class authDB {
         this.id = id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUsername() {
+        return username;
     }
 
     public void setUser_name(String user_name) {
-        this.user_name = user_name;
+        this.username = user_name;
     }
 
-    public String getPass_word() {
-        return pass_word;
+    public String getPassword() {
+        return password;
     }
 
     public void setPass_word(String pass_word) {
-        this.pass_word = pass_word;
+        this.password = pass_word;
     }
 
     public String getEmail() {
