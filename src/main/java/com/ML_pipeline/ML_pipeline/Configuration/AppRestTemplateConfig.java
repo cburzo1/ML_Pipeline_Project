@@ -1,4 +1,4 @@
-package Configuration;
+package com.ML_pipeline.ML_pipeline.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
