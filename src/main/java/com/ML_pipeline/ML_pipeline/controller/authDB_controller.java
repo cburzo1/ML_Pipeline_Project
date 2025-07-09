@@ -19,7 +19,7 @@ public class authDB_controller {
         return "success add user";
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/")
     public String hello() {
         return "Hello world!";
     }

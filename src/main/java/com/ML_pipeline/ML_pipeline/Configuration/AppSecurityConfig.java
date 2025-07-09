@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -50,8 +52,35 @@ public class AppSecurityConfig {
     public AuthenticationProvider authenticationProvider(){
 
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(NoOp);
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
 
         return provider;
+        //PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        /*
+        *🔁 Why the Instructor Said "The Problem is When Getting the User"
+            Because the error usually occurs when Spring Security retrieves the user from the DB and attempts to match the password during login — not during signup.
+
+            If the password in the DB:
+
+            Lacks a prefix ({bcrypt} or {noop})
+
+            Is not hashed or malformed
+
+            Then Spring throws:
+
+            python
+            Copy
+            Edit
+            There is no PasswordEncoder mapped for the id "null"
+            ✅ Summary
+            createDelegatingPasswordEncoder() expects passwords to be prefixed with {bcrypt}, {noop}, etc.
+
+            You must manually call encode() on passwords before saving.
+
+            If you skip encode(), add {noop} yourself for testing.
+
+            Always test your login, not just the signup.
+        * */
     }
 }
