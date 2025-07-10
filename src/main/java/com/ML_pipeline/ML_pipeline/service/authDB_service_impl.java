@@ -18,6 +18,7 @@ public class authDB_service_impl implements authDB_service{
     @Autowired
     private authDB_repo ar;
 
+    @Autowired
     private JWTService jwts;
 
     @Autowired
@@ -43,7 +44,7 @@ public class authDB_service_impl implements authDB_service{
         Authentication authentication = am.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         if(authentication.isAuthenticated()){
-            return jwts.generateToken();
+            return jwts.generateToken(user.getUsername());
         }
 
         return "Failed";
