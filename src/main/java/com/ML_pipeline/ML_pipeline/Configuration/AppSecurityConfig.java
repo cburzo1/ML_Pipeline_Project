@@ -1,13 +1,17 @@
 package com.ML_pipeline.ML_pipeline.Configuration;
 
+import com.ML_pipeline.ML_pipeline.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +19,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+/*🔐 http.authorizeHttpRequests(...)
+This tells Spring Security:
+
+        “Hey, let’s define rules for which requests are allowed without authentication and which are not.”
+
+You're providing a lambda that customizes the AuthorizationFilter.
+
+        🧱 Inside the Lambda: auth -> auth.requestMatchers(...)...
+Line	Explanation
+requestMatchers("signup", "login")	This says: “If the HTTP request path matches /signup or /login, allow it.”
+These are public endpoints (no login required).
+        .permitAll()	Explicitly allows everyone to access those endpoints — even unauthenticated users.
+.anyRequest().authenticated()	All other requests must come from an authenticated user. If not, Spring Security will block the request or redirect to login (depending on setup).
+*/
 
 @Configuration
 @EnableWebSecurity
@@ -27,11 +46,14 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                        .requestMatchers("signup", "login")
+                        .permitAll()
+                        .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                .formLogin(Customizer.withDefaults());//form -> form.disable()
+                //.formLogin(Customizer.withDefaults())
+                .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));//form -> form.disable()
 
         System.out.println("🔐 Security config applied");
 
@@ -82,5 +104,11 @@ public class AppSecurityConfig {
 
             Always test your login, not just the signup.
         * */
+    }
+
+    //talks to authentication provider ^
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

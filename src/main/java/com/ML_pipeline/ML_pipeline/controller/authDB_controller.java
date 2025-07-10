@@ -19,6 +19,12 @@ public class authDB_controller {
         return "success add user";
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+
+        return as.verify(user);
+    }
+
     @GetMapping("/")
     public String hello() {
         return "Hello world!";
