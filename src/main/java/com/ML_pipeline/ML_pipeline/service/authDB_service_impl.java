@@ -27,11 +27,11 @@ public class authDB_service_impl implements authDB_service{
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     ObjectMapper mapper = new ObjectMapper();
-    private static final Logger logger = LoggerFactory.getLogger(raw_data_service.class);
+    private static final Logger logger = LoggerFactory.getLogger(authDB_service_impl.class);
 
     @Override
     public void add_user(User user){
-        logger.info("See user {}", user);
+        logger.info("ADD_USER @!$");
 
         user.setPass_word(encoder.encode(user.getPassword()));
 
@@ -40,7 +40,7 @@ public class authDB_service_impl implements authDB_service{
 
     @Override
     public String verify(User user){
-
+        logger.info("VERIFY @!$");
         Authentication authentication = am.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         if(authentication.isAuthenticated()){
