@@ -6,5 +6,5 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface authDB_service {
     void add_user(User user);
     String verify(User user);
-    void edit_user_info(HttpServletRequest request, User user, String info);
+    void edit_user_info(UserDTO udto, User user, String info);
 }

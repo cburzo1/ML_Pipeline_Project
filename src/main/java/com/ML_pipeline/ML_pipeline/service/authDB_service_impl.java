@@ -54,10 +54,11 @@ public class authDB_service_impl implements authDB_service{
     }
 
     @Override
-    public void edit_user_info(HttpServletRequest request, User user, String info){
+    public void edit_user_info(User user, String info){
         logger.info("EDIT USER INFO @!$");
-        if(Objects.equals(info, "pw")){
-            logger.info(String.valueOf(request), user, info);
+        if (Objects.equals(info, "pw")) {
+            logger.info(String.valueOf(user));
+            logger.info(info);
         }
     }
 }

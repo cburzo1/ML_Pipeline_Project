@@ -33,10 +33,10 @@ public class authDB_controller {
     }
 
     @PostMapping("/change-password")
-    public String change_password(@RequestBody HttpServletRequest request, User user){
+    public String change_password(@RequestBody User user){
         logger.info("CHANGE PASSWORD @!$");
 
-        as.edit_user_info(request, user, "pw");
+        as.edit_user_info(user, "pw");
 
         return "Password change successful";
     }
