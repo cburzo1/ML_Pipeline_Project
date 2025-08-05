@@ -3,6 +3,7 @@ package com.ML_pipeline.ML_pipeline.controller;
 import com.ML_pipeline.ML_pipeline.ML_pipeline_projectApplication;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.service.authDB_service;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,15 @@ public class authDB_controller {
         logger.info("LOGIN @!$");
 
         return as.verify(user);
+    }
+
+    @PostMapping("/change-password")
+    public String change_password(@RequestBody HttpServletRequest request, User user){
+        logger.info("CHANGE PASSWORD @!$");
+
+        as.edit_user_info(request, user, "pw");
+
+        return "Password change successful";
     }
 
     @GetMapping("/")

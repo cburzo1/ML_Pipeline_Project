@@ -2,7 +2,6 @@ package com.ML_pipeline.ML_pipeline.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -55,8 +54,8 @@ public class User {
         return password;
     }
 
-    public void setPass_word(String pass_word) {
-        this.password = pass_word;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

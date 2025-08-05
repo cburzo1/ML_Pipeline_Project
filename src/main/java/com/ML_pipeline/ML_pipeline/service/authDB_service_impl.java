@@ -4,6 +4,7 @@ import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.model.UserPrincipal;
 import com.ML_pipeline.ML_pipeline.repository.authDB_repo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class authDB_service_impl implements authDB_service{
@@ -33,7 +36,7 @@ public class authDB_service_impl implements authDB_service{
     public void add_user(User user){
         logger.info("ADD_USER @!$");
 
-        user.setPass_word(encoder.encode(user.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
 
         ar.save(user);
     }
@@ -48,5 +51,13 @@ public class authDB_service_impl implements authDB_service{
         }
 
         return "Failed";
+    }
+
+    @Override
+    public void edit_user_info(HttpServletRequest request, User user, String info){
+        logger.info("EDIT USER INFO @!$");
+        if(Objects.equals(info, "pw")){
+            logger.info(String.valueOf(request), user, info);
+        }
     }
 }
