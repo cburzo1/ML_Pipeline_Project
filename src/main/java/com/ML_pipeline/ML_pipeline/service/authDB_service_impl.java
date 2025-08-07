@@ -1,5 +1,6 @@
 package com.ML_pipeline.ML_pipeline.service;
 
+import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.model.UserPrincipal;
 import com.ML_pipeline.ML_pipeline.repository.authDB_repo;
@@ -54,11 +55,10 @@ public class authDB_service_impl implements authDB_service{
     }
 
     @Override
-    public void edit_user_info(User user, String info){
+    public void edit_user_pw(User user, change_password_DTO pwDTO){
         logger.info("EDIT USER INFO @!$");
-        if (Objects.equals(info, "pw")) {
             logger.info(String.valueOf(user));
-            logger.info(info);
+            logger.info(String.valueOf(pwDTO));
         }
     }
 }

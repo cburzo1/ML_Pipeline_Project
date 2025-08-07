@@ -1,6 +1,7 @@
 package com.ML_pipeline.ML_pipeline.controller;
 
 import com.ML_pipeline.ML_pipeline.ML_pipeline_projectApplication;
+import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.service.authDB_service;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,10 +34,10 @@ public class authDB_controller {
     }
 
     @PostMapping("/change-password")
-    public String change_password(@RequestBody User user){
+    public String change_password(@RequestBody User user, change_password_DTO pwDTO){
         logger.info("CHANGE PASSWORD @!$");
 
-        as.edit_user_info(user, "pw");
+        as.edit_user_pw(user, pwDTO);
 
         return "Password change successful";
     }
