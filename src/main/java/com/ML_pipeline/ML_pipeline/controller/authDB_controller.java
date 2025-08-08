@@ -34,7 +34,7 @@ public class authDB_controller {
     }
 
     @PostMapping("/change-password")
-    public String change_password(@RequestBody User user, change_password_DTO pwDTO){
+    public String change_password(@RequestBody change_password_DTO pwDTO, User user){
         logger.info("CHANGE PASSWORD @!$");
 
         as.edit_user_pw(user, pwDTO);

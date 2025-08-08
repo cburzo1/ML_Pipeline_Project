@@ -57,8 +57,7 @@ public class authDB_service_impl implements authDB_service{
     @Override
     public void edit_user_pw(User user, change_password_DTO pwDTO){
         logger.info("EDIT USER INFO @!$");
-            logger.info(String.valueOf(user));
-            logger.info(String.valueOf(pwDTO));
-        }
+        logger.info("OLDPASS:::: "+pwDTO.getOld_pass());
+
     }
 }

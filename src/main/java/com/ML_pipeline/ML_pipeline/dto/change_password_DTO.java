@@ -1,10 +1,14 @@
 package com.ML_pipeline.ML_pipeline.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class change_password_DTO {
+    @JsonProperty("old_pass")
     private String old_pass;
+
+    @JsonProperty("new_pass")
     private String new_pass;
 
     public String getOld_pass() {
