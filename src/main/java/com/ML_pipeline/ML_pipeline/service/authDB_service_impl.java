@@ -15,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class authDB_service_impl implements authDB_service{
@@ -55,9 +57,23 @@ public class authDB_service_impl implements authDB_service{
     }
 
     @Override
-    public void edit_user_pw(User user, change_password_DTO pwDTO){
+    public void edit_user_pw(change_password_DTO pwDTO){
         logger.info("EDIT USER INFO @!$");
-        logger.info("OLDPASS:::: "+pwDTO.getOld_pass());
 
+        // Get the current user from DB
+        User user = ar.findByUsername(pwDTO.getUsername());
+        String current_pw = user.getPassword();
+
+        if (encoder.matches(pwDTO.getOld_pass(), current_pw)) {
+            logger.info("current EQUALS old");
+
+            // Encode new password and save
+            user.setPassword(encoder.encode(pwDTO.getNew_pass()));
+            ar.save(user);
+
+            logger.info("Password updated successfully!");
+        } else {
+            logger.warn("Old password is incorrect!");
+        }
     }
 }

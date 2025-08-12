@@ -7,5 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface authDB_service {
     void add_user(User user);
     String verify(User user);
-    void edit_user_pw(User user, change_password_DTO pwDTO);
+    void edit_user_pw(change_password_DTO pwDTOr);
+    /*void blacklist(String token);
+    boolean isBlackListed(String token);*/
 }

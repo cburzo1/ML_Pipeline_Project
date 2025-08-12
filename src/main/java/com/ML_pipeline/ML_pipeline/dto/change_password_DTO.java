@@ -11,6 +11,16 @@ public class change_password_DTO {
     @JsonProperty("new_pass")
     private String new_pass;
 
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getOld_pass() {
         return old_pass;
     }

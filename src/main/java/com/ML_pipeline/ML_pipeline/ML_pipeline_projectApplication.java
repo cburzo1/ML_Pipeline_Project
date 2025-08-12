@@ -16,5 +16,4 @@ public class ML_pipeline_projectApplication {
 		SpringApplication.run(ML_pipeline_projectApplication.class, args);
 		logger.info("RUN @!$");
 	}
-
 }

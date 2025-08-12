@@ -3,6 +3,7 @@ package com.ML_pipeline.ML_pipeline.controller;
 import com.ML_pipeline.ML_pipeline.ML_pipeline_projectApplication;
 import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
 import com.ML_pipeline.ML_pipeline.model.User;
+import com.ML_pipeline.ML_pipeline.service.JWTService;
 import com.ML_pipeline.ML_pipeline.service.authDB_service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -17,6 +18,9 @@ public class authDB_controller {
 
     @Autowired
     private authDB_service as;
+
+    @Autowired
+    private JWTService jwts;
 
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
@@ -34,12 +38,25 @@ public class authDB_controller {
     }
 
     @PostMapping("/change-password")
-    public String change_password(@RequestBody change_password_DTO pwDTO, User user){
+    public String change_password(@RequestBody change_password_DTO pwDTO){
         logger.info("CHANGE PASSWORD @!$");
 
-        as.edit_user_pw(user, pwDTO);
+        as.edit_user_pw(pwDTO);
 
         return "Password change successful";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7); // remove "Bearer "
+            jwts.blacklist(token); // We'll implement this later
+            return "Successfully Logged Out";
+        } else {
+            return "No token provided";
+        }
     }
 
     @GetMapping("/")

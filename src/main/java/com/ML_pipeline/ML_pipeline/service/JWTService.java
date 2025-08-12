@@ -13,16 +13,14 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
 public class JWTService {
     private static final Logger logger = LoggerFactory.getLogger(JWTService.class);
     private String secret_key = "";
+    private final Set<String> blacklistSet = new HashSet<>();
 
     public JWTService(){
         logger.info("JWTService @!$");
@@ -96,5 +94,13 @@ public class JWTService {
         logger.info("EXTRACT EXPIRATION @!$");
 
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public void blacklist(String token){
+        blacklistSet.add(token); // in-memory for now
+    }
+
+    public boolean isBlackListed(String token) {
+        return blacklistSet.contains(token);
     }
 }

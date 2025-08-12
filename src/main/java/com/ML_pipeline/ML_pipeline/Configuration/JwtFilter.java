@@ -2,6 +2,9 @@ package com.ML_pipeline.ML_pipeline.Configuration;
 
 import com.ML_pipeline.ML_pipeline.service.JWTService;
 import com.ML_pipeline.ML_pipeline.service.MyUserDetailsService;
+import com.ML_pipeline.ML_pipeline.service.authDB_service;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +20,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @Component
@@ -28,6 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     ApplicationContext context;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -54,6 +60,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
+        if (jwts.isBlackListed(token)) {
+            logger.info("Blocked request with blacklisted token");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         filterChain.doFilter(request, response);
     }
 }
