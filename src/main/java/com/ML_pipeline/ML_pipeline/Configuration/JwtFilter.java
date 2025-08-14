@@ -2,6 +2,7 @@ package com.ML_pipeline.ML_pipeline.Configuration;
 
 import com.ML_pipeline.ML_pipeline.service.JWTService;
 import com.ML_pipeline.ML_pipeline.service.MyUserDetailsService;
+import com.ML_pipeline.ML_pipeline.service.RateLimiterService;
 import com.ML_pipeline.ML_pipeline.service.authDB_service;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +34,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     ApplicationContext context;
 
+    @Autowired
+    RateLimiterService rateLimiterService;
+
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -42,11 +46,17 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
+        String ip = request.getRemoteAddr();
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             //Skip Bearer string
             token = authHeader.substring(7);
             username = jwts.extractUserName(token);
+        }
+
+        if (!rateLimiterService.isAllowed(username, ip)) {
+            response.setStatus(429);
+            return;
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
