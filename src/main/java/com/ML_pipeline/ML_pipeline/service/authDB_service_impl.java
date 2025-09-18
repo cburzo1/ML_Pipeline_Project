@@ -1,6 +1,8 @@
 package com.ML_pipeline.ML_pipeline.service;
 
+import com.ML_pipeline.ML_pipeline.dto.AuthResponse;
 import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
+import com.ML_pipeline.ML_pipeline.model.RefreshToken;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.model.UserPrincipal;
 import com.ML_pipeline.ML_pipeline.repository.authDB_repo;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.NullValue;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +31,9 @@ public class authDB_service_impl implements authDB_service{
     private JWTService jwts;
 
     @Autowired
+    private RefreshTokenService rts;
+
+    @Autowired
     AuthenticationManager am;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -45,15 +51,21 @@ public class authDB_service_impl implements authDB_service{
     }
 
     @Override
-    public String verify(User user){
+    public AuthResponse verify(User user){
         logger.info("VERIFY @!$");
         Authentication authentication = am.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         if(authentication.isAuthenticated()){
-            return jwts.generateToken(user.getUsername());
+            String accessToken = jwts.generateToken(user.getUsername());
+
+            // Refresh token
+            RefreshToken refreshToken = rts.createRefreshToken(user.getUsername());
+
+            // Return both
+            return new AuthResponse(accessToken, refreshToken.getToken());
         }
 
-        return "Failed";
+        return new AuthResponse("Failed", null);
     }
 
     @Override

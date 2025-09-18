@@ -40,4 +40,12 @@ public class RefreshToken {
     public void setExpiryDate(Instant expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser(){
+        return this.user;
+    }
 }

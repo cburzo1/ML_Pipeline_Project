@@ -1,6 +1,7 @@
 package com.ML_pipeline.ML_pipeline.controller;
 
 import com.ML_pipeline.ML_pipeline.ML_pipeline_projectApplication;
+import com.ML_pipeline.ML_pipeline.dto.AuthResponse;
 import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.service.JWTService;
@@ -31,7 +32,7 @@ public class authDB_controller {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user){
+    public AuthResponse login(@RequestBody User user){
         logger.info("LOGIN @!$");
 
         return as.verify(user);

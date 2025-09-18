@@ -1,5 +1,6 @@
 package com.ML_pipeline.ML_pipeline.service;
 
+import com.ML_pipeline.ML_pipeline.dto.AuthResponse;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.repository.authDB_repo;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class authDBServiceTest {
         when(jwts.generateToken("testuser")).thenReturn("fake-jwt-token");
 
         // Act
-        String result = rds.verify(user);
+        AuthResponse result = rds.verify(user);
 
         // Assert
         assertEquals("fake-jwt-token", result);
@@ -93,7 +94,7 @@ public class authDBServiceTest {
         when(am.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(mockAuth);
 
         // Act
-        String result = rds.verify(user);
+        AuthResponse result = rds.verify(user);
 
         // Assert
         assertEquals("Failed", result);
