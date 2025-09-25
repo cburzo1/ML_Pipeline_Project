@@ -86,6 +86,10 @@ public class JWTService {
 
     private boolean isTokenExpired(String token) {
         logger.info("IS TOKEN EXPIRED @!$");
+        boolean expired = extractExpiration(token).before(new Date());
+        if (expired) {
+            logger.warn("JWT expired: {}", token);
+        }
 
         return extractExpiration(token).before(new Date());
     }

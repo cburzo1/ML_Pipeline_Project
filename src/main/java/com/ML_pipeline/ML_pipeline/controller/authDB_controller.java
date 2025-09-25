@@ -5,6 +5,7 @@ import com.ML_pipeline.ML_pipeline.dto.AuthResponse;
 import com.ML_pipeline.ML_pipeline.dto.change_password_DTO;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.service.JWTService;
+import com.ML_pipeline.ML_pipeline.service.RefreshTokenService;
 import com.ML_pipeline.ML_pipeline.service.authDB_service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -22,6 +23,9 @@ public class authDB_controller {
 
     @Autowired
     private JWTService jwts;
+
+    @Autowired
+    private RefreshTokenService rts;
 
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
@@ -47,12 +51,15 @@ public class authDB_controller {
         return "Password change successful";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @PostMapping("/logout")
+    public String logout(@RequestBody User user, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7); // remove "Bearer "
+
+            rts.deleteRefreshToken(user);
+
             jwts.blacklist(token); // We'll implement this later
             return "Successfully Logged Out";
         } else {

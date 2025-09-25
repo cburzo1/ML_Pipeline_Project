@@ -4,6 +4,7 @@ import com.ML_pipeline.ML_pipeline.model.RefreshToken;
 import com.ML_pipeline.ML_pipeline.model.User;
 import com.ML_pipeline.ML_pipeline.repository.RefreshTokenRepo;
 import com.ML_pipeline.ML_pipeline.repository.authDB_repo;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,18 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         refreshToken.setExpiryDate(Instant.now().plus(30, ChronoUnit.DAYS)); // example: 30-day expiry
 
         return rtr.save(refreshToken);
+    }
+
+    @Transactional
+    public void deleteRefreshToken(User user){
+
+
+        logger.info("FOUND REFRESH TOKEN OF USER {}", user.getUsername());
+
+        User user2 = ar.findByUsername(user.getUsername());
+
+        logger.info("ID HERE :: {}",user2.getId());
+
+        rtr.deleteByUser_Id(user2.getId());
     }
 }

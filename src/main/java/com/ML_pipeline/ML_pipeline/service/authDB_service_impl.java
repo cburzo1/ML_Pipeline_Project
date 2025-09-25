@@ -42,13 +42,29 @@ public class authDB_service_impl implements authDB_service{
     private static final Logger logger = LoggerFactory.getLogger(authDB_service_impl.class);
 
     @Override
-    public void add_user(User user){
-        logger.info("ADD_USER @!$");
+    public void add_user(User user) {
+        logger.info("ADD_USER started for username: {}", user.getUsername());
 
-        user.setPassword(encoder.encode(user.getPassword()));
+        // Check for duplicate username
+        if (ar.existsByUsername(user.getUsername())) {
+            logger.warn("Signup failed: username {} already exists", user.getUsername());
+            throw new IllegalArgumentException("Username already exists");
+        }
 
-        ar.save(user);
+        try {
+            // Encode password
+            user.setPassword(encoder.encode(user.getPassword()));
+
+            // Save to DB
+            ar.save(user);
+
+            logger.info("User {} signed up successfully", user.getUsername());
+        } catch (Exception e) {
+            logger.error("Signup failed for user {}: {}", user.getUsername(), e.getMessage());
+            throw new RuntimeException("Failed to create user", e);
+        }
     }
+
 
     @Override
     public AuthResponse verify(User user){
@@ -58,12 +74,18 @@ public class authDB_service_impl implements authDB_service{
         if(authentication.isAuthenticated()){
             String accessToken = jwts.generateToken(user.getUsername());
 
+
+
             // Refresh token
             RefreshToken refreshToken = rts.createRefreshToken(user.getUsername());
+
+            logger.info("User {} logged in successfully", user.getUsername());
 
             // Return both
             return new AuthResponse(accessToken, refreshToken.getToken());
         }
+
+        logger.warn("Failed login attempt for user {}: invalid password", user.getUsername());
 
         return new AuthResponse("Failed", null);
     }

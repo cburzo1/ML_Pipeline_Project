@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface authDB_repo extends JpaRepository<User, Integer> {
 
     User findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }
