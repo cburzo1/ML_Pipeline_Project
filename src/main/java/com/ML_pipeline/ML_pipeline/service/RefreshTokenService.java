@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 
 public interface RefreshTokenService {
     public RefreshToken createRefreshToken(String username);
-    public void deleteRefreshToken(User user);
+    //public void deleteRefreshToken(String token);
 }

@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,31 +24,35 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Autowired
     private authDB_repo ar;
 
+    @Autowired
+    private JWTService jwts;
+
     private static final Logger logger = LoggerFactory.getLogger(RefreshTokenServiceImpl.class);
 
+    @Transactional
     public RefreshToken createRefreshToken(String username){
         logger.info("CREATE REFRESH TOKEN UUID @!$");
         User user = ar.findByUsername(username);
-
-        RefreshToken refreshToken = new RefreshToken();
+        RefreshToken refreshToken = rtr.findByUser_Id(user.getId())
+                .orElse(new RefreshToken());
 
         refreshToken.setUser(user);
-        refreshToken.setToken(UUID.randomUUID().toString()); // random string for token
-        refreshToken.setExpiryDate(Instant.now().plus(30, ChronoUnit.DAYS)); // example: 30-day expiry
+        refreshToken.setToken(UUID.randomUUID().toString());
+        refreshToken.setExpiryDate(Instant.now().plus(30, ChronoUnit.DAYS));
 
         return rtr.save(refreshToken);
     }
 
-    @Transactional
-    public void deleteRefreshToken(User user){
+    /*@Transactional
+    public void deleteRefreshToken(String token){
 
+        String username = jwts.extractUserName(token);
+        logger.info("FOUND REFRESH TOKEN OF USER {}", username);
 
-        logger.info("FOUND REFRESH TOKEN OF USER {}", user.getUsername());
-
-        User user2 = ar.findByUsername(user.getUsername());
+        User user2 = ar.findByUsername(username);
 
         logger.info("ID HERE :: {}",user2.getId());
 
         rtr.deleteByUser_Id(user2.getId());
-    }
+    }*/
 }

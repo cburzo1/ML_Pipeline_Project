@@ -52,6 +52,27 @@ public class JwtFilter extends OncePerRequestFilter {
             //Skip Bearer string
             token = authHeader.substring(7);
             username = jwts.extractUserName(token);
+
+            try {
+                if (jwts.isTokenExpired(token)) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+                    response.getWriter().write("Access token expired");
+                    return; // stop the filter chain
+                }
+
+                // Optional: set authentication in SecurityContext
+                // SecurityContextHolder.getContext().setAuthentication(auth);
+
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid access token");
+                return;
+            }
+        } else {
+            // No token → reject or continue depending on your policy
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Missing access token");
+            return;
         }
 
         if (!rateLimiterService.isAllowed(username, ip)) {

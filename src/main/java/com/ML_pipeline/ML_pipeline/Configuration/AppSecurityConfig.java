@@ -33,7 +33,7 @@ public class AppSecurityConfig {
         logger.info("SECURITY FILTER CHAIN @!$");
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("auth/signup", "auth/login")
+                        .requestMatchers("auth/signup", "auth/login", "/refresh")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
